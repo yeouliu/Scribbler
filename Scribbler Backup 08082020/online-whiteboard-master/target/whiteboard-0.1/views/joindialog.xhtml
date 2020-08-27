@@ -1,0 +1,66 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.prime.com.tr/ui"
+      xmlns:cc="http://java.sun.com/jsf/composite/composite">
+    <ui:composition template="/templates/formTemplate.xhtml">
+        
+        <ui:define name="header">
+        <h:panelGrid styleClass="headingBoard">
+            <h:panelGroup >
+                <h:graphicImage library="img" name="white.png" style="height:50px; width:50px;margin-left:5px;"/>
+                <h:outputText value="Join Scribbler Session" style="margin-left:5px;"/>
+                <!--                        <p:commandButton id="logoutButton" value="Logout" ajax="false" style="display: block;margin-left:1750px;margin-bottom: 25px;"
+                                                 action="#{createWhiteboard.logout}"/>-->
+            </h:panelGroup>
+        </h:panelGrid>
+        </ui:define>
+        
+        <ui:define name="center">
+            <p:fieldset legend="Join Whiteboard">
+                <p:messages/>
+                <h:form id="joinForm" prependId="false" style="font-size: 18px; padding:5px;
+                        font-family: Comic Sans MS, cursive, Helvetica, sans-serif !important;">
+                    <h:panelGrid columns="2" id="whiteboardPanel" columnClasses="whiteboardCol1Alt,whiteboardCol2"
+                                 headerClass="whiteboardHeader" footerClass="whiteboardFooter">
+                        <f:facet name="header">
+                            <h:outputText value="Login and join the whiteboard session '#{joinWhiteboard.title}'"/>
+                        </f:facet>
+                        <cc:requiredLabel for="wbUserName" value="User name"/>
+                        <p:inputText id="wbUserName" value="#{joinWhiteboard.user}" required="true" label="User name"/>
+                        <cc:requiredLabel value="Password: " />
+                        <h:inputSecret id = "password" value = "#{joinWhiteboard.pwd}" required="true" requiredMessage="Please enter password"/>
+                        <!--                        <cc:requiredLabel for="wbUserName" value="User name"/>
+                                                <p:inputText id="wbUserName" value="#{createWhiteboard.creator}" required="true" label="User name"/>
+                                                <cc:requiredLabel value="Password: " />
+                                                <h:inputSecret id = "password" value = "#{createWhiteboard.password}" required="true" requiredMessage="Please enter password"/>-->
+                        <f:facet name="footer">
+                            <p:captcha label="Captcha"/>
+                            <p:commandButton id="dialogButton" value="Join Session!" ajax="false"
+                                             action="#{joinWhiteboard.joinSession}"/>
+                        </f:facet>
+                        <h:messages styleClass="errorMessage"  style="color:red;"/> <!-- Global messages -->
+                    </h:panelGrid>
+
+                    <p:focus for="wbUserName"/>
+                </h:form>
+                <br/>
+                <h:form style="font-size: 18px; padding:5px;
+                        font-family: Comic Sans MS, cursive, Helvetica, sans-serif !important;">
+                    <h:outputText  value="Not registered? Register Here -> "/>
+                    <!--                    <p:commandButton id="registerButton" value="Register!" ajax="false" style="font-size:15px;"
+                                                         action="#{createWhiteboard.register}"/>-->
+                    <p:commandButton id="registerButton" value="Register!" ajax="false" style="font-size:15px;"
+                                     action="#{joinWhiteboard.joinRegister}"/>
+
+                </h:form>
+            </p:fieldset>
+        </ui:define>
+        <ui:define name="resources">
+            <h:outputStylesheet library="css" name="startdialog.css"/>
+        </ui:define>
+    </ui:composition>
+</html>

@@ -1,0 +1,62 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.prime.com.tr/ui"
+      xmlns:cc="http://java.sun.com/jsf/composite/composite"
+      xmlns:w="http://com.yeou/scribbler">
+<ui:composition template="/templates/formTemplate.xhtml">
+    
+    <ui:define name="header">
+        <h:panelGrid styleClass="headingBoard">
+            <h:panelGroup >
+                <h:graphicImage library="img" name="white.png" style="height:50px; width:50px;margin-left:5px;"/>
+                <h:outputText value="Create New Whiteboard" style="margin-left:5px;"/>
+                <!--                        <p:commandButton id="logoutButton" value="Logout" ajax="false" style="display: block;margin-left:1750px;margin-bottom: 25px;"
+                                                 action="#{createWhiteboard.logout}"/>-->
+            </h:panelGroup>
+        </h:panelGrid>
+        </ui:define>
+    
+    <ui:define name="center">
+        <p:fieldset legend="New Whiteboard">
+            <p:messages/>
+            <h:form id="mainForm" prependId="false" style="font-size: 18px; padding:5px;
+                        font-family: Comic Sans MS, cursive, Helvetica, sans-serif !important;">
+                <h:panelGrid columns="2" id="whiteboardPanel" columnClasses="whiteboardCol1,whiteboardCol2"
+                             footerClass="whiteboardFooter">
+                    <cc:requiredLabel for="wbTitle" value="Whiteboard title"/>
+                    <p:inputText id="wbTitle" value="#{createWhiteboard.title}" required="true"
+                                 label="Whiteboard title"/>
+                    <h:outputLabel value="Whiteboard width" for="wbWidth"/>
+                    <h:panelGroup>
+                        <p:spinner id="wbWidth" min="0" max="9999" suffix="px" value="#{createWhiteboard.width}"
+                                   label="Whiteboard width" maxlength="4">
+                            <w:pixelConverter/>
+                        </p:spinner>
+                        <h:outputLabel value="Whiteboard height" for="wbHeight"
+                                       style="margin-left: 10px; margin-right: 10px;"/>
+                        <p:spinner id="wbHeight" min="0" max="9999" suffix="px" value="#{createWhiteboard.height}"
+                                   label="Whiteboard height" maxlength="4">
+                            <w:pixelConverter/>
+                        </p:spinner>
+                        <p:focus for="wbTitle"/>
+                    </h:panelGroup>
+                    <f:facet name="footer">
+                        
+                        <p:commandButton id="dialogButton" value="Create Board and Start Drawing!" ajax="false"
+                                         action="#{createWhiteboard.create}"/>
+                    </f:facet>
+                    
+                </h:panelGrid>
+                <p:focus for="wbTitle"/>
+            </h:form>
+        </p:fieldset>
+    </ui:define>
+    <ui:define name="resources">
+        <h:outputStylesheet library="css" name="startdialog.css"/>
+    </ui:define>
+</ui:composition>
+</html>

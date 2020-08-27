@@ -1,0 +1,64 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.prime.com.tr/ui"
+      xmlns:cc="http://java.sun.com/jsf/composite/composite">
+    <ui:composition template="/templates/formTemplate.xhtml">
+        <ui:define name="header">
+        <h:panelGrid styleClass="headingBoard">
+            <h:panelGroup >
+                <h:graphicImage library="img" name="white.png" style="height:50px; width:50px;margin-left:5px;"/>
+                <h:outputText value="Register to Scribbler" style="margin-left:5px;"/>
+                <!--                        <p:commandButton id="logoutButton" value="Logout" ajax="false" style="display: block;margin-left:1750px;margin-bottom: 25px;"
+                                                 action="#{createWhiteboard.logout}"/>-->
+            </h:panelGroup>
+        </h:panelGrid>
+        </ui:define>
+        
+        <ui:define name="center">
+            <p:fieldset legend="Registration Page">
+                <h:form id="registrationForm" prependId="false" style="font-size: 18px; padding:5px;
+                        font-family: Comic Sans MS, cursive, Helvetica, sans-serif !important;">
+                    <h:panelGrid columns="2" id="wbPanel" columnClasses="wbCol1,wbCol2"
+                                 footerClass="wbFooter">
+
+                        <cc:requiredLabel  value="User Name:"/>  
+                        <h:inputText id="username" value = "#{createWhiteboard.creator}" required="true" validatorMessage="The entered username is already being used"  requiredMessage="Please enter a username">
+                        </h:inputText>
+                        <h:inputHidden value = "Check1" id = "check1" /> 
+                        <br/>  
+                        <cc:requiredLabel  value="Password:"/>  
+                        <h:inputSecret id = "password" value = "#{createWhiteboard.password}" required="true" requiredMessage="Please enter password" validatorMessage="Please note that the password should be atleast 5 characters long">
+                        <f:validateLength minimum = "5" />
+                        </h:inputSecret>>
+
+                        <h:messages styleClass="errorMessage"  style="color:red;"/>
+
+                        <f:facet name="footer">
+                            <p:commandButton id="registerButton" value="Join Scribbler!" ajax="false" style="font-size:15px;"
+                                             action="#{createWhiteboard.validateUserRegister}"/>
+<!--                            <p:commandButton id="loginButton" value="Back" ajax="false" style="font-size:15px;padding: 7px;align-content: center;"
+                                     action="#{createWhiteboard.loginRedirect}"/>-->
+                        </f:facet>
+                    </h:panelGrid>  
+                    <p:focus for="username"/>
+                    <p:messages/>
+                </h:form>
+                <br/>
+                <h:form style="font-size: 18px; padding:5px;
+                        font-family: Comic Sans MS, cursive, Helvetica, sans-serif !important;">
+                    <h:outputText  value="Go back to Login -> "/>
+                    <p:commandButton id="loginButton" value="Back" ajax="false" style="font-size:15px;padding: 7px; align-self: center;"
+                                     action="#{createWhiteboard.loginRedirect}"/>
+
+                </h:form>
+            </p:fieldset>
+        </ui:define>
+        <ui:define name="resources">
+            <h:outputStylesheet library="css" name="startdialog.css"/>
+        </ui:define>
+    </ui:composition>
+</html>
+
+

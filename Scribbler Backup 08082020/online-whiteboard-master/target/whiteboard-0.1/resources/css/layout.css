@@ -1,0 +1,72 @@
+html {
+    margin: 0px;
+    width: 100%;
+    height: 100%;
+}
+
+body {
+    font-family: Trebuchet MS, Verdana, Helvetica, sans-serif;
+    background-image: url("#{resource['img:photo.jfif']}");
+    background-color: #cccccc; /*Used when the image is not available*/
+    background-position: center; /* Center the image */
+    background-repeat: no-repeat; /* Do not repeat the image */
+    background-size: 2000px 1055px;
+    font-size: 12px;
+    margin: 0px;
+    padding: 0px;
+    width: 100%;
+    height: 100%;
+     
+}
+
+.centredLayout {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.centredLayout table.outer {
+    margin: auto;
+    width: auto;
+    height: 100%;
+}
+
+.centredLayout table.outer td {
+    text-align: center;
+    vertical-align: middle;
+    border-collapse: collapse;
+}
+
+.centredLayout div.inside {
+    margin-left: auto;
+    margin-right: auto;
+    text-align: left;
+}
+
+#criticalErrorMessages {
+    margin: 10px;
+    width: 664px;
+    text-align: left;
+}
+
+.ui-fieldset-legend{
+    font-size: 20px;
+}
+.ui-button-text{
+    font-size: 15px;
+}
+
+input { font-size: 18px; }
+.headingBoard{
+    font-size: 50px;
+    color: white;
+    background-color: #00264d;
+    height:65px;
+    width: 100%;
+}
+
+.headerClass {
+    position: relative;
+    width: 100%;
+    height: 65px;
+}

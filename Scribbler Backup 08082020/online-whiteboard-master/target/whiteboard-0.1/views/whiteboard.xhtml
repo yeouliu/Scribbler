@@ -1,0 +1,203 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.prime.com.tr/ui"
+      xmlns:cc="http://java.sun.com/jsf/composite/composite">
+    <ui:composition template="/templates/whiteboardLayout.xhtml">
+        <ui:define name="body">
+            <p:messages id="wbMessages"/>
+            <h:form id="mainForm" prependId="false">
+
+
+                <h:panelGrid styleClass="headingBoard">
+                    <h:panelGroup >
+                        <h:graphicImage library="img" name="white.png" style="height:50px; width:50px;margin-left:5px;"/>
+                        <h:outputText value="Welcome to Scribbler" style="margin-left:5px;"/>
+<!--                        <p:commandButton id="logoutButton" value="Logout" ajax="false" style="display: block;margin-left:1750px;margin-bottom: 25px;"
+                                 action="#{createWhiteboard.logout}"/>-->
+                    </h:panelGroup>
+                </h:panelGrid>
+<!--                <p:separator style="height: 1px;"/>-->
+
+
+                <h:panelGrid id="headline" columns="8" cellpadding="0" cellspacing="0"
+                             columnClasses="colTitle,colImg,colCreated,colImg,colUsers,colImg,colInvite">
+                    <h:outputText value="#{displayWhiteboard.title}"/>
+                    <h:graphicImage library="img" name="calendar.png"/>
+                    <h:outputText value="Created: #{displayWhiteboard.creationDate} by #{displayWhiteboard.creator}"/>
+                    <h:graphicImage library="img" name="userInfo.png"/>
+                    <h:panelGroup>
+                        <h:outputText id="activeUsers" value="Active users: "/>
+                        <h:outputText id="usersCount" value="#{displayWhiteboard.usersCount}"/>
+                    </h:panelGroup>
+                    <h:graphicImage library="img" name="sendLink.png"/>
+                    <p:commandLink value="Invite people" ajax="false" style="display: block;"
+                                   onclick="inviteWidget.show(); return false;"/>
+
+                </h:panelGrid>
+                <h:inputHidden id="pinnedState" value="#{panelsState.pinned}"/>
+
+                <h:panelGrid id="whiteboardGrid" columns="3" cellpadding="0" cellspacing="0">
+                    <h:panelGroup layout="block">
+                        <h:panelGroup id="whiteboard" layout="block"/>
+                        <h:panelGroup id="monitorPanel">
+                            <h:panelGroup layout="block" style="margin-left: 50px;"
+                                          styleClass="ui-dialog ui-widget-content ui-corner-all"
+                                          rendered="#{panelsState.pinned}">
+                                <cc:dialogTitlebar title="Event Monitoring" id="dialogTitleBar"/>
+                                <ui:include src="/sections/monitoring.xhtml"/>
+                            </h:panelGroup>
+                        </h:panelGroup>
+                    </h:panelGroup>
+                    <h:panelGroup id="toolboxPanel" >
+                        <h:panelGroup layout="block" style="width: 200px; "
+                                      styleClass="toolboxPanel ui-dialog ui-widget-content ui-corner-all"
+                                      rendered="#{panelsState.pinned}">
+                            <cc:dialogTitlebar title="Toolbox"/>
+                            <ui:include src="/sections/toolbox.xhtml"/>
+                        </h:panelGroup>
+                    </h:panelGroup>
+                    <h:panelGroup id="propertiesPanel">
+                        <h:panelGroup layout="block"
+                                      styleClass="propertiesPanel autoWidthDialog ui-dialog ui-widget-content ui-corner-all"
+                                      rendered="#{panelsState.pinned}">
+                            <cc:dialogTitlebar title="Edit Properties"/>
+                                <ui:include src="/sections/properties.xhtml">
+                                <ui:param name="subviewId" value="pinnedSubview"/>
+                            </ui:include>
+                        </h:panelGroup>
+                    </h:panelGroup>
+                </h:panelGrid>
+                <script type="text/javascript">
+                    /* <![CDATA[ */
+                    jQuery("#whiteboard").css({width: '#{displayWhiteboard.width}px', height: '#{displayWhiteboard.height}px'});
+                    /* ]]> */
+                </script>
+
+                <h:panelGroup id="unpinnedPanels">
+                    <p:dialog id="toolboxDialog" styleClass="toolboxPanel" header="Toolbox" draggable="true"
+                              resizable="false" closable="false" visible="true" position="'right',10"
+                              widgetVar="toolboxWidget" width="200" rendered="#{not panelsState.pinned}">
+                        <ui:include src="/sections/toolbox.xhtml"/>
+                    </p:dialog>
+                    <p:dialog id="propertiesDialog" styleClass="propertiesPanel autoWidthDialog" header="Edit Properties"
+                              draggable="true" resizable="false" closable="false" visible="true" position="'right',10"
+                              widgetVar="propertiesWidget" rendered="#{not panelsState.pinned}"
+                              onShow="onShowAutoWidthDialog(this.jq);" onHide="onHideAutoWidthDialog(this.jq);">
+                        <ui:include src="/sections/properties.xhtml">
+                            <ui:param name="subviewId" value="unpinnedSubview"/>
+                        </ui:include>
+                    </p:dialog>
+                    <p:dialog id="monitoringDialog" header="Event Monitoring" draggable="true"
+                              resizable="true" closable="true" visible="true" position="10,'bottom'"
+                              widgetVar="monitoringWidget" width="750" rendered="#{not panelsState.pinned}">
+                        <ui:include src="/sections/monitoring.xhtml"/>
+                    </p:dialog>
+                    <h:panelGroup rendered="#{not panelsState.pinned}">
+                        <script type="text/javascript">
+                            /* <![CDATA[ */
+                            jQuery(function () {
+                                var wb = jQuery("#whiteboard");
+                                var wbOffset = wb.offset();
+
+                                var parentT = jQuery('#toolboxDialog').parent();
+                                parentT.css('left', wbOffset.left + wb.width() + 14 + 'px');
+                                parentT.css('top', wbOffset.top + 'px');
+
+                                var parentP = jQuery('#propertiesDialog').parent();
+                                parentP.css('left', wbOffset.left + wb.width() + 231 + 'px');
+                                parentP.css('top', wbOffset.top + 'px');
+
+                                var parentM = jQuery('#monitoringDialog').parent();
+                                parentM.css('left', wbOffset.left + 'px');
+                                parentM.css('top', wbOffset.top + wb.height() + 14 + 'px');
+                            });
+                            /* ]]> */
+                        </script>
+                    </h:panelGroup>
+                </h:panelGroup>
+
+                <ui:include src="/sections/dialogs.xhtml"/>
+            </h:form>
+            <h:form>
+                <p:commandButton value="Save Board" ajax="false" style="display: block;margin-left: 60px;padding: 7px;"
+                                 id="savebutton" onclick="saveBoard();"/>
+            </h:form>
+            <br/>
+            <h:form>
+                <p:commandButton value="Logout" ajax="false" style="display: block;margin-left: 60px;font-size: 20px; padding: 7px;"
+                                 action="#{createWhiteboard.logout}"/>
+            </h:form>
+        </ui:define>
+        <ui:define name="resources">
+            <h:outputScript library="js" name="css-browser-selector.js" target="head"/>
+            <h:outputScript library="js" name="json2-min.js" target="head"/>
+            <h:outputScript library="js" name="uuid.js" target="head"/>
+            <h:outputScript library="js" name="jquery.validate.js" target="head"/>
+            <h:outputScript library="js" name="raphael-min.js" target="head"/>
+            <h:outputScript library="js" name="jquery.atmosphere.js" target="head"/>
+            <h:outputScript library="js" name="blackbird.js" target="head"/>
+            <h:outputStylesheet library="css" name="blackbird.css"/>
+            <h:outputScript library="js" name="wboard-config.js" target="head"/>
+            <h:outputScript library="js" name="wboard-drawing.js" target="body"/>
+            <h:outputScript library="js" name="whiteboard.js" target="body"/>
+            <h:outputStylesheet library="css" name="whiteboard.css"/>
+
+            <h:outputScript library="js" name="html2canvas.js" target="body"/>
+
+            <script type="text/javascript">
+                var saveBoard = function () {
+                    html2canvas(document.getElementById("whiteboard"), {
+                        onrendered: function (canvas) {
+                            //document.body.appendChild(canvas);
+                            //var canvas = document.createElement('canvas');
+                            // Create canvas element
+                            var tempcanvas = document.createElement('canvas');
+                            tempcanvas.width = 1000;
+                            tempcanvas.height = 1000;
+                            var context = tempcanvas.getContext('2d');
+                            //context.drawImage(document.getElementById("whiteboard"), 112, 0, 288, 200, 0, 0, 800, 800);
+                            //context.drawImage(img,x,y,width,height);
+                            //var img = document.getElementById("whiteboard");
+                            //context.drawImage(img, 10, 10);
+
+                            //context.drawImage(canvas, 800, 800);
+                            //context.drawImage(canvas, 112, 0, 288, 200, 0, 0, 800, 800);
+                            context.drawImage(canvas, 0, 0, 800, 800, 0, 0, 800, 800);
+                            //context.drawImage(img,sx,sy,swidth,sheight,x,y,width,height);
+                            //img	Specifies the image, canvas, or video element to use
+                            //sx	Optional. The x coordinate where to start clipping
+                            //sy	Optional. The y coordinate where to start clipping
+                            //swidth	Optional. The width of the clipped image	
+                            //sheight	Optional. The height of the clipped image
+                            //x	The x coordinate where to place the image on the canvas	
+                            //y	The y coordinate where to place the image on the canvas	
+                            //width	Optional. The width of the image to use (stretch or reduce the image)	
+                            //height	Optional. The height of the image to use (stretch or reduce the image)
+                            //
+                            //
+                            var link = document.createElement("a");
+                            link.href = tempcanvas.toDataURL('image/jpg');   //function blocks CORS
+                            link.download = 'scribbler.jpg';
+                            link.click();
+
+                        }
+                    });
+                };
+
+
+            </script>
+            <script type="text/javascript">
+                /* <![CDATA[ */
+                jQuery(function () {
+                    initWhiteboard(#{displayWhiteboard.elementsAsJson}, '#{displayWhiteboard.whiteboard.uuid}', '#{displayWhiteboard.user}', #{displayWhiteboard.usersCount}, '#{displayWhiteboard.pubSubUrl}', '#{displayWhiteboard.pubSubTransport}');
+                });
+
+                /* ]]> */
+            </script>
+        </ui:define>
+    </ui:composition>
+</html>

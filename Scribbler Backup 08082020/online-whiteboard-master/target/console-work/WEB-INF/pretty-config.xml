@@ -1,0 +1,39 @@
+<pretty-config xmlns="http://ocpsoft.com/prettyfaces/3.3.0"
+               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+               xsi:schemaLocation="http://ocpsoft.com/prettyfaces/3.3.0
+                                   http://ocpsoft.com/xml/ns/prettyfaces/ocpsoft-pretty-faces-3.3.0.xsd">
+
+    <url-mapping id="wbWorkplace">
+        <pattern value="/whiteboard/workplace/#{whiteboardId : whiteboardIdentifiers.whiteboardId}/#{senderId : whiteboardIdentifiers.senderId}/"/>
+        <view-id value="/views/whiteboard.jsf"/>
+    </url-mapping>
+
+    <url-mapping id="wbCreate">
+        <pattern value="/whiteboard/create/"/>
+        <view-id value="/views/createdialog.jsf"/>
+    </url-mapping>
+
+    <url-mapping id="wbJoin">
+        <pattern value="/whiteboard/join/#{whiteboardId}/"/>
+        <view-id value="/views/joindialog.jsf"/>
+    </url-mapping>
+
+    <!--    Login form for the application-->
+    <url-mapping id="wbLogin">
+        <pattern value="/whiteboard/login/"/>
+        <view-id value="/views/login.jsf"/>
+    </url-mapping>
+    
+    <!--    Register to the application-->
+    <url-mapping id="wbRegister">
+        <pattern value="/whiteboard/register/"/>
+        <view-id value="/views/register.jsf"/>
+    </url-mapping>
+    
+    <!--    Register to the application-->
+    <url-mapping id="wbJoinRegister">
+        <pattern value="/whiteboard/joinregister/"/>
+        <view-id value="/views/joinregister.jsf"/>
+    </url-mapping>
+    
+</pretty-config>
